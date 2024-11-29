@@ -1,3 +1,5 @@
+import "@/lib/i18n";
+
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";

@@ -1,0 +1,17 @@
+{
+  "dashboard-title": "Alkalmazás",
+  "menu-items": {
+    "dashboard": "Irányítópult",
+    "inbox": "Beérkezett üzenetek",
+    "calendar": "Naptár",
+    "search": "Keresés",
+    "settings": "Beállítások"
+  },
+  "user-menu": {
+    "upgrade-to-pro": "Frissítés Pro verzióra",
+    "account": "Fiók",
+    "billing": "Számlázás",
+    "notifications": "Értesítések",
+    "logout": "Kijelentkezés"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "dashboard-title": "Application",
+  "menu-items": {
+    "dashboard": "Dashboard",
+    "inbox": "Inbox",
+    "calendar": "Calendar",
+    "search": "Search",
+    "settings": "Settings"
+  },
+  "user-menu": {
+    "upgrade-to-pro": "Upgrade to Pro",
+    "account": "Account",
+    "billing": "Billing",
+    "notifications": "Notifications",
+    "logout": "Logout"
+  }
+}

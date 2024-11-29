@@ -11,16 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
+import { Route as DashboardImport } from './routes/dashboard'
 import { Route as IndexImport } from './routes/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as CameraIndexImport } from './routes/camera/index'
+import { Route as DashboardAccountIndexImport } from './routes/dashboard/account/index'
 
 // Create/Update Routes
 
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
+const DashboardRoute = DashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -31,15 +32,21 @@ const IndexRoute = IndexImport.update({
 } as any)
 
 const DashboardIndexRoute = DashboardIndexImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => rootRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
 } as any)
 
 const CameraIndexRoute = CameraIndexImport.update({
   id: '/camera/',
   path: '/camera/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardAccountIndexRoute = DashboardAccountIndexImport.update({
+  id: '/account/',
+  path: '/account/',
+  getParentRoute: () => DashboardRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -53,11 +60,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
     '/camera/': {
@@ -69,59 +76,91 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/': {
       id: '/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
+      path: '/'
+      fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/account/': {
+      id: '/dashboard/account/'
+      path: '/account'
+      fullPath: '/dashboard/account'
+      preLoaderRoute: typeof DashboardAccountIndexImport
+      parentRoute: typeof DashboardImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface DashboardRouteChildren {
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardAccountIndexRoute: typeof DashboardAccountIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardAccountIndexRoute: DashboardAccountIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/camera': typeof CameraIndexRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/account': typeof DashboardAccountIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/camera': typeof CameraIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/account': typeof DashboardAccountIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/camera/': typeof CameraIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/account/': typeof DashboardAccountIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/camera' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/camera'
+    | '/dashboard/'
+    | '/dashboard/account'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/camera' | '/dashboard'
-  id: '__root__' | '/' | '/about' | '/camera/' | '/dashboard/'
+  to: '/' | '/camera' | '/dashboard' | '/dashboard/account'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/camera/'
+    | '/dashboard/'
+    | '/dashboard/account/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   CameraIndexRoute: typeof CameraIndexRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   CameraIndexRoute: CameraIndexRoute,
-  DashboardIndexRoute: DashboardIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,22 +174,30 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
-        "/camera/",
-        "/dashboard/"
+        "/dashboard",
+        "/camera/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/dashboard": {
+      "filePath": "dashboard.tsx",
+      "children": [
+        "/dashboard/",
+        "/dashboard/account/"
+      ]
     },
     "/camera/": {
       "filePath": "camera/index.tsx"
     },
     "/dashboard/": {
-      "filePath": "dashboard/index.tsx"
+      "filePath": "dashboard/index.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/account/": {
+      "filePath": "dashboard/account/index.tsx",
+      "parent": "/dashboard"
     }
   }
 }
